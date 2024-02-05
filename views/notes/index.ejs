@@ -1,0 +1,42 @@
+<%- include('../includes/top.ejs') %>
+<!-- navigation below  -->
+<%- include('../includes/navigation.ejs') %>
+
+<main>
+  <div class="container">
+    <% if (notes.length > 0) { %>
+    <h1>List of notes!</h1>
+    <% for (let note of notes) { %>
+    <div class="media">
+      <div class="media-left">
+        <img
+          class="media-object"
+          src="<%= note.imageUrl %>"
+          alt="<%= note.title %>"
+        />
+      </div>
+      <div class="media-body">
+        <h1 class="media-heading"><%= note.title %></h1>
+        <p><%= note.description %></p>
+        <div class="actions">
+          <a href="/note/<%= note._id %>" role="button" class="btn"> View</a>
+          <a
+            href="/add-note/<%= note._id %>?isEditing=true"
+            role="button"
+            class="btn"
+          >
+            Edit</a
+          >
+          <form action="/delete-note" method="POST">
+            <input type="hidden" name="noteId" value="<%= note._id %>" />
+            <button class="btn">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% } %> <% } else { %>
+    <h1>No data available!</h1>
+    <% } %>
+  </div>
+</main>
+<%- include('../includes/bottom.ejs') %>
