@@ -1,15 +1,13 @@
 const getDb = require('../connection/db').getDb;
 const mongodb = require('mongodb');
-const ObjectId = mongodb.ObjectId;
 
 module.exports = class Note {
-  constructor(_title, _description, _imageUrl, _noteId,_userId) {
+  constructor(_title, _description, _imageUrl, _noteId) {
     this._id = _noteId;
     this.title = _title;
     this.description = _description;
     this.imageUrl = _imageUrl;
     this.status = 'unapproved';
-    this.userId=new ObjectId(_userId);
   }
 
   save() {
@@ -45,12 +43,12 @@ module.exports = class Note {
     );
   }
 
-  static fetchAll(isAdmin,userId) {
+  static fetchAll(isAdmin) {
     const db = getDb();
     if (isAdmin) {
       return db.collection('notes').find().toArray();
     }
-    return db.collection('notes').find({ userId:new ObjectId(userId),status: 'approved' }).toArray();
+    return db.collection('notes').find({ status: 'approved' }).toArray();
   }
 
   static findNoteById(noteId) {
